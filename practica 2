@@ -25,3 +25,13 @@ AGS16 <- subset(SDEMT116,SDEMT116$ENT== "01")  #para crear una subbase de datos
 AGS16V1 <- subset (SDEMT116,SDEMT116$ENT=="01" | SDEMT116$ENT=="02")
 #crea subbase de datos con la variable ENT (entidad), del estado 01 y 02 (Aguascalientes y Baja California)
 # | significa "o" en R
+
+#----------------------- SERIE DE DATOS PRECARGADA
+data("AirPassengers") #base de datos precargada en R
+class(AirPassengers) #para saber que clase de datos es AirPassengers, ts = series de tiempo
+start(AirPassengers) #para saber en que año inicia la serie de tiempo
+end(AirPassengers) #función para saber en que año acaba la serie
+frequency(AirPassengers) #frecuencia de los datos, 12 quiere decir que son mensuales
+summary(AirPassengers) #muestra un resumen de estadistica descriptiva
+plot(AirPassengers) #muestra una gráfica de la serie de tiempo
+
