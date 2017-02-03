@@ -1,0 +1,27 @@
+#----------------------PRÁCTICA 1 (1 DE FEBRERO)
+temporal<-tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/regulares/enoe/microdatos/enoe_15ymas/2016/2016trim1_dbf.zip",temporal)
+files=unzip(temporal, list=TRUE)$Name
+unzip(temporal,files=files[grepl("dbfl",files)])
+install.packages("foreign")
+require(foreign)
+SDEMT116<-data.frame(read.dbf("sdemt116.dbf"))
+
+install.packages("questionr") #bajamos de internet la libreria para la funcion wtd.table
+
+require (questionr)
+install.packages("foreign") #bajamos de internet la libreria para la funcion wtd.table
+
+require (foreign)
+
+
+#------------------------PRÁCTICA 2 (3 DE FEBRERO)
+table(SDEMT116$CLASE2)
+
+wtd.table(SDEMT116$clase2,weights = SDEMT116$FAC)
+AGS16 <- subset(SDEMT116,SDEMT116$ENT== "01")  #para crear una subbase de datos
+#AGS16 nombre de la subbase
+# subset es la funcion
+AGS16V1 <- subset (SDEMT116,SDEMT116$ENT=="01" | SDEMT116$ENT=="02")
+#crea subbase de datos con la variable ENT (entidad), del estado 01 y 02 (Aguascalientes y Baja California)
+# | significa "o" en R
