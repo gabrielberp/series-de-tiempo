@@ -1,0 +1,51 @@
+#-------------------------------- practica 3 ------------------------------
+
+pob<- sample (100:120, 15, replace= F) #el primer argumento es mín. y máx.
+#el segundo argumento significa cuantos datos queremos que nos genere
+#replace significa si queremos reemplazo o no, F es falso
+pob
+
+
+#la convertimos en serie de tiempo
+pobts <- ts (pob, frequency =1, start=(2000))#ts es para que el objeto pob lo vuelva en una serie de tiempo
+# la "frequency" =1 quiere decir que será anual e inicia en el año 2000
+
+end(pobts)# nos indica cuando termina la serie de tiempo
+
+plot(pobts) #función para graficar la base pobts
+
+
+infor <- ts (read.csv(("C:\\Users\\SALA-D4\\Downloads\\IndicadoresENOE_2017-02-08.xls")))
+#para importar una base usamos la ruta que se encuentra en las propiedades del archivo
+#debemos agregar doble diagonal, al final se agrega el nombre del archivo
+#la funcion ts es para que haga una serie de tiempo y "read.csv" es para que lea el archivo
+
+infor
+
+plot (infor)
+
+inforts <- ts (infor, frequency =4, start=(2005))
+
+inforcsv <- ts (read.csv(("C:\\Users\\SALA-D4\\Downloads\\inform.csv"),header=T),frequency =4, start=(2005))
+plot(inforcsv)
+inforcsv
+
+
+cuatro <- (read.csv(("C:\\Users\\SALA-D4\\Downloads\\cuatro.csv")))
+
+cuatrost <- ts(cuatro, frequency=4,start=2005)
+
+plot(cuatrost)   
+
+tscuatro <- ts(cuatro[,1], frequency=4,start=2005)# [renglon, columna]
+#los corchetes significan que es una matriz
+tscuatro
+
+tcondcritts <- ts(cuatro[,4], frequency=4,start=2005)# [renglon, columna]
+tcondcritts
+
+ttrabasalts <- ts(cuatro[,3], frequency=4,start=2005)# [renglon, columna]
+ttrabasalts
+
+tocupparcidesemts <- ts(cuatro[,2], frequency=4,start=2005)# [renglon, columna]
+tocupparcidesemts
