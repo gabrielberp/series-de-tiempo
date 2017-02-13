@@ -1,0 +1,38 @@
+#-------------------------practica 5 -------------------------------
+
+seriemultiple <- ts.intersect(tocupar, trasal,tconcri,desocu) #serie de tiempo múltiple
+#con cuatro variables
+plot(seriemultiple,main="Serie de tiempo múltiple", xlab="Años", ylab="Número de personas",col="red") #gráfica serie de tiempo múltiple
+seriemultiple02 <- window(seriemultiple, start=c(2007,1),end=c(2014,2)) # para crear una serie que vaya en alguna fecha determinada, extraida de una base que ya tenemos 
+plot(seriemultiple02,main="Serie de 2007 a 2014", xlab="Años",ylab="Número de personas",col="blue")
+
+#Obtener 4 series de tiempo, mínimo 30 datos
+# Las series deben tener sustento para comparar
+#Importarlas, declararlas, graficarlas juntas
+#crear serie de tiempo múltiple
+#Despues dividir estas series de tiempo en 3 periodos con intervalos iguales 
+#como graficar una serie de tiempo multiple con diferentes colores cada serie
+
+orots <- ts (read.csv(("C:\\Users\\SalaD-10\\Desktop\\oro.csv"),header=T),frequency =12, start=(2014))
+plot(orots)
+
+platats <- ts (read.csv(("C:\\Users\\SalaD-10\\Desktop\\plata.csv"),header=T),frequency =12, start=(2014))
+plot(platats)
+
+petroleots <- ts (read.csv(("C:\\Users\\SalaD-10\\Desktop\\petroleo.csv"),header=T),frequency =12, start=(2014))
+plot(petroleots)
+
+cobrets <- ts (read.csv(("C:\\Users\\SalaD-10\\Desktop\\cobre.csv"),header=T),frequency =12, start=(2014))
+plot(cobrets)
+
+smultmateriasprim <- ts.intersect(orots, platats,petroleots,cobrets)
+plot(smultmateriasprim,main="Precio de materias primas", xlab="Años", ylab="Precio",col="red")
+
+smultmp1 <- window(smultmateriasprim, start=c(2014,1),end=c(2014,10))
+plot(smultmp1,main="Enero 2014 a Octubre 2014", xlab="Años",ylab="Precio",col="blue")
+
+smultmp2 <- window(smultmateriasprim, start=c(2014,10),end=c(2015,8))
+plot(smultmp2,main="Octubre 2014 a Agosto 2015", xlab="Años",ylab="Precio",col="blue")
+
+smultmp3 <- window(smultmateriasprim, start=c(2015,8),end=c(2016,6))
+plot(smultmp3,main="Agosto 2015 a Junio 2016", xlab="Años",ylab="Precio",col="blue")
