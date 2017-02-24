@@ -1,0 +1,26 @@
+######################## practica 7 24/02/2017 #####################################################
+
+##################################### WHILE ###############################
+
+s<- 1
+while(s<6) {s <- s*2; print(s);} # en los corchetes va la operación que queremos realizar
+
+s<- 1
+while (s<5){s<- s+1 ; ;if (s==4)break; print(s)}
+
+
+################################### de la base de desocupación ##############
+
+tsdes<- ts(desocupación,frequency = 4,start=2005) #elaborar la serie de tiempo
+detsdes <-decompose (tsdes) #descompone la serie en estacionariedad, tendencia y aleatoriedad,
+#############################si no especificamos que tipo de descomposicion es, R la toma como aditivo
+detsdes # muestra los tres elementos
+detsdes$trend #muestra sólo la tendencia de la serie
+detsdes$seasonal #muestra la estacionariedad de la serie
+
+plot(tsdes,col="blue", main="Tasa de desocupación trimestral", ylab="Tasas", xlab= "Años") #grafica de la serie
+lines(detsdes$trend, col= "red", ylab=" Tendencia") #grafica la línea de tendencia
+
+monthplot(detsdes$seasonal, main= "IVEc", ylab= "IVE trimestral") #para graficar IVE
+
+detsdes <-decompose (tsdes, type="multiplicative") #descmpone la serie con el modelo multiplicativo  
