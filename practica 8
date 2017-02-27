@@ -1,0 +1,53 @@
+##############  D E S C O M P O S I C I O N   C L A S I C A 
+#  Se utiliza la función decompose 
+#  otro tipo de descomposicion de la estacionariedad,
+#  tendencia y aleatoriedad es la descomposicion 
+#  por Loess la cual está basada en un logaritmo que permite 
+#  descomponer la serie de tiempo en tres elementos: estacionariedad,
+#  tendencia y aleatoriedad, una de las ventajas de esta descomposicion 
+#  es el calculo de estacionariedad que se obtienen valores de 
+#  estacionariedad no constantes, en contraste con el método clasico de 
+#  descomposicion
+
+
+#### usando la función decompose,
+
+desocupación
+class (desocupación) # para saber de que clase es desocupacion
+class(desocu)
+
+desocup <- decompose (desocu) #obtenemos los tres elementos de la serie con la funcion decompose
+desocup
+
+tend1 <- desocup$trend #guardamos la tendencia de la ts en trend1 
+plot (tend1, col="blue", main="Tendencia desocupacion", ylab="tasas",xlab="años")# graficamos la tendencia
+lines (tend2, col="red") # adhiere una línea a la grafica anterior de la tendencia 2
+########################## que es la que obtuvimos con el método de Loose
+
+############ DESCOMPOSICION TENDENCIA, ESTACIONAL POR LOOSE
+#   Se utiliza la función stl()
+
+# así utilizamos entonces:
+desco2 <- stl(desocu,s.window="periodic",robust=T)
+desco2
+names(desco2)
+
+tend2 <- desco2$time.series[, 2]
+tend2
+
+esta2<- desco2$time.series [, 1]
+esta2
+install.packages("fpp")
+require(fpp)
+ajus <- seasadj(desco2)## ajustamos estacionariedad para mejorar modelo
+
+## pronostico metodo ingenuo
+
+inge1 <- naive(ajus, h=2) # nos pronostica con una constante, h es la periodicidad con que queremos pronosticar
+plot (inge1) # graficamos el pronostico
+inge1
+
+
+
+
+
