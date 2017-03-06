@@ -1,0 +1,29 @@
+
+
+install.packages("fpp")
+require(fpp)
+plot(window(elec,start=1980),ylab="Gwh",xlab="Year",main="Australian electric production")
+#Esta, tendencia y ciclico
+plot(bricksq, ylab="millon units", xlab="Year", main="Australian clay brick production")
+#esta y ciclo, no mucho tendencia
+plot(hsales,main="sales of new one-family houses, USA", ylab="Total sales",xlab="Year")
+#no esta ni tendencia, posible ciclo
+bricksq
+hsales
+seasonplot(elec,s=12,year.labels=TRUE,main="electricidad", ylab="año",col=rainbow(20), year.labels.left= TRUE ,pch=15)
+#nos grafica por año
+
+seasonplot(bricksq,s=4,year.labels=TRUE,main="Australian clay brick production", ylab="año",col=rainbow(20), year.labels.left= TRUE ,pch=15)
+#nos grafica por año, como los datos de produccion de ladrillos es trimestral usamos s=4
+
+seasonplot(hsales,s=12,year.labels=TRUE,main="sales of new one-family houses, USA", ylab="año",col=rainbow(20), year.labels.left= TRUE ,pch=15)
+#nos grafica por año
+
+
+dec<- decompose(bricksq)
+#eliminando tendencia
+sinesta<-bricksq-dec$seasonal# quitamos estacionariedad a la base de ladrillos
+sintend<- bricksq-dec$trend # quitamos la tendencia a la base de ladrillos
+
+plot(sinesta)
+plot(sintend)
