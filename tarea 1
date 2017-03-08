@@ -1,0 +1,10 @@
+#################### TAREA 1
+##CRECIMIENTO DEL PIB DE 1980 A 1999
+
+pibmx<-read.csv(file.choose())
+
+tspibmx<-ts(pibmx, frequency=1, start=1961)
+
+plot(window(tspibmx,start = 1961, end=2015), ylab ="Crecimiento (%)", xlab="Año", main = "Crecimiento del PIB de México (%)", col="red", type="b", pch=8) #gráfica del pib de 1961 a 2015
+
+plot(window(tspibmx,start = 1980, end=1999), ylab ="Crecimiento (%)", xlab="Año", main = "Crecimiento del PIB de México (%)", col="red", type="b", pch=8) #gráfica del pib de 1980 a 1999
