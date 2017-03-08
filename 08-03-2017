@@ -1,0 +1,18 @@
+desocudecom<- decompose(desocu, type="mult")#usando la base de desocupacion con la 
+#funcion decompose obtenemos los elementos con el modelo multiplicativo
+ plot(desocudecom, col="blue")#gráfica de los elementos y la serie de tiempo
+
+
+#DESESTACIONALIZAR UNA SERIE
+#se desestacionaliza una serie por diversas razones
+#entre las que se destacan para poder predecir nuestros  datos con mayor 
+#precisión y sin contar con factores externos al comportamiento de
+#nuestros datos.
+
+#dos elementos que permiten desestacionalizar una serie:
+require(fpp)
+eeadj <- seasadj (desocudecom) #la función seasadj quita la estacionaliedad de la serie
+plot(eeadj)#grafica de la serie sin estacionaliedad
+
+#otra forma de hacerlo, de forma manual es 
+sinesta <- desot-dectss$seasonal
