@@ -1,0 +1,13 @@
+oro<- read.csv(file.choose())
+plata <- read.csv (file.choose())
+
+orots <- ts (oro,frequency = 4,start=2008)
+platats <- ts (plata,frequency = 4,start=2008)
+
+cor(orots,platats)
+
+cv<-cov(orots,platats)
+sdo<-sd(orots)
+sdplata<-sd(platats)
+c <- (cv/(sdo*sdplata))
+c
