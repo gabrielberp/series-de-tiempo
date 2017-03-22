@@ -1,0 +1,41 @@
+#llamamos la base
+pib<-read.csv(("C:\\Users\\SalaD-10\\Downloads\\PIB México1.csv"))
+View(pib) #serie de tiempo, ver datos
+spib<-ts(pib, frequency = 4, start=2007) #declaramos la base como una serie de tiempo
+
+acf(spib) # para graficar el correlograma de la ST
+
+######### Métodos lineales para pronóstico
+################### MÉTODO INGÉNUO ############################################
+# Son las aplicaciones de pronósticos lineales
+# como el ingenuo, promedio, ingenuo estacional y el de deriva
+# el pronóstico ingénuo está basado en la última observación que arroja
+# la serie de tiempo. Este pronóstico asume que la observación más 
+# importante es la última.
+# función en R :
+#                naive(serie, h= número de pronósticos)
+
+install.packages("forecast")
+require(forecast)
+naive(spib, h=4)
+plot(naive(spib, h=4))
+
+################### MÉTODO PROMEDIO ###########################################
+# Éste método le da el mismo peso a todos los datos u observaciones, es decir,
+# se asume con éste método que todas las observaciones tienen la misma importancia 
+# por lo que el pronóstico es un promedio de todas las observaciones.
+# función en R :
+#                meanf (serie, h = número de pronosticos)
+
+meanf(spib, h=4)
+plot(meanf(spib, h=4))
+
+################### MÉTODO INGENUO ESTACIONAL #################################
+# Este método se utiliza en series de tiempo con alta estacionalidad, 
+# este pronóstico consiste en darle el mayor peso o la mayor ponderación
+# al dato del mismo periodo en el año anterior, por ejemplo trimestre 2 del
+# 2005 es igual al trimestre 2 del 2006
+# función en R :
+#                snaive (serie, h = número de pronosticos)
+snaive(spib, h=4)
+plot (snaive(spib, h=4))
