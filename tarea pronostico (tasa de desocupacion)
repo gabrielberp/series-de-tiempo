@@ -1,0 +1,55 @@
+######################## TAREA 26/03/2017
+#  CON LA BASE DE TASA DE DESOCUPACIÓN USAR DATOS DE 2005 A 2010 Y HACER 
+# PRONÓSTICO CON LOS CUATRO MÉTODOS VISTOS EN CLASE, LUEGO CONTRASTAR EN
+# UNA GRÁFICA CON LOS DATOS REALES.
+#  RESTAR A LOS DATOS REALES EL PRONÓSTICO PARA OBTENER EL ERROR.
+
+# SERIE DE TIEMPO CON DATOS DE 2005 A 2010
+tdesoc515 <-read.csv(file.choose())
+tstdesoc515 <- ts(tdesoc515, frequency = 4,start=2005)
+plot(tstdesoc515)
+
+#SERIE DE TIEMPO CON TODOS LOS DATOS
+tdesoc510 <-read.csv(file.choose())
+tstdesoc510 <- ts(tdesoc510, frequency = 4,start=2005)
+tstdesoc510
+
+#SERIE DE TIEMPO CON DATOS DE 2011 A 2016
+tdesoc1116 <-read.csv(file.choose())
+tstdesoc1116 <- ts(tdesoc1116, frequency = 4,start=2011)
+tstdesoc1116
+
+install.packages("forecast")
+require(forecast)
+
+# PRONÓSTICO CON LOS CUATRO MÉTODOS
+meandesoc<- meanf(tstdesoc510,h=24)
+ingedesoc <- naive(tstdesoc510, h=24)
+ingestdesoc <- snaive(tstdesoc510, h=24)
+derivadesoc <- rwf(tstdesoc510,h=24,drift=TRUE)
+
+#GRÁFICA CONTRASTANDO LOS MÉTODOS Y DATOS REALES
+x11()
+plot(meandesoc, main="PRONÓSTICO DE DESOCUPACIÓN TRIMESTRAL") #primero graficamos
+lines(ingedesoc$mean,col=6)
+lines(ingestdesoc$mean,col=7)
+lines(derivadesoc$mean,col=8)
+lines(tstdesoc1116,col="red")
+legend("topleft",lty=1, col=c(5,6,7,8,"red"),
+       legend=c("media","ingenuo","ingenuoestacional","deriva","reales"))
+
+# RESTA DEL MÉTODO PROMEDIO CON DATOS REALES
+restamean<- (tstdesoc1116 - meandesoc$mean)
+restamean
+
+# RESTA DEL MÉTODO INGENUO CON DATOS REALES
+restainge<- (tstdesoc1116 - ingedesoc$mean)
+restainge
+
+# RESTA DEL MÉTODO INGENUO ESTACIONAL CON DATOS REALES
+restaingest<- (tstdesoc1116 - ingestdesoc$mean)
+restaingest
+
+# RESTA DEL MÉTODO DERIVA CON DATOS REALES
+restaderiva<- (tstdesoc1116 - derivadesoc$mean)
+restaderiva
