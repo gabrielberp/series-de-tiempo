@@ -1,0 +1,28 @@
+# de la base de datos con varios datos queremos solo un renglón, con 
+#data.frame vamos a leer solo del renglon 7, de la columna dos a la 49
+asa<-t( data.frame(read.csv("C:\\Users\\SalaD-10\\Documents\\tasa asalariados.csv"
+                          , header=T)[7,2:49]))
+
+
+asats <- as.numeric(asats)# con esta línea hacemos los valores numéricos
+asats<- ts(asats,start=2005,frequency=4)# con esta líne hacemos la time series
+asats
+
+
+require(forecast)
+
+mod1 <- ses(asats, alpha=0.1, initial="simple",h=8) #alpha lo damos nosotros
+                                                    # "simple" es por el suavi
+                                                    # zado simple
+mod2 <- ses(asats, alpha=0.3, initial="simple",h=8)
+mod3 <- ses(asats, alpha=0.95,initial="simple", h=8)
+
+x11() #para abrir una nueva ventana
+plot(mod1, ylab="asalariados",xlab= "año", main="ASALARIADOS",type="o")
+lines(mod1$fitted,col="brown",type="o") #fitted los valores ajustados que van desde el inicio de la serie
+lines(mod2$fitted,col="red",type="o")
+lines(mod3$fitted,col="green",type="o")
+lines(mod1$mean,col="brown",type="o") #mean son los valores del pronóstico
+lines(mod2$mean,col="red",type="o")
+lines(mod3$mean,col="green",type="o") 
+legend ("topleft",lty=1, col=c(1,"brown","red","green"),c("datos",expression(alpha==0.1),expression(alpha==0.3),expression(alpha==.95)), pch=15)
