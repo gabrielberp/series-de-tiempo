@@ -1,0 +1,70 @@
+########### ANALISIS DE LAS ACCIONES DE "NETFLIX" CON EL MODELO
+###########                  SUAVIZADO EXPONENCIAL SIMPLE 
+
+netflix <- read.csv(file.choose())
+netflix
+
+tsnetflix <- ts(netflix,start=2016, frequency = 252)
+tsnetflix
+plot(tsnetflix)
+
+
+require(fpp)
+mod1net<- ses(tsnetflix, alpha=0.2, initial = "simple", h=8) 
+mod2net<- ses(tsnetflix, alpha=0.4, initial = "simple", h=8)
+mod3net<- ses(tsnetflix, alpha=0.6, initial = "simple",  h=8)
+mod4net<- ses(tsnetflix, alpha=0.8, initial = "simple", h=8)
+
+X11()
+plot(mod1net,ylab="precio de cierre", xlab="día", main="PRECIO DE LAS ACCIONES DE NETFLIX", type = "o" )
+lines(fitted(mod1net), col="brown", type="o")
+lines(fitted(mod2net), col="red", type="o")
+lines(fitted(mod3net), col="green", type="o")
+lines(fitted(mod4net), col="blue", type="o")
+
+#Graficamente el modelo 4 es el que se acerca más a los datos reales.
+
+########## RESIDUOS DEL MODELO 1
+m1 <- accuracy(mod1net) #funcion accuracy nos da RMS y MAE
+m1 <- as.numeric(m1)
+
+########## RESIDUOS DEL MODELO 2
+m2 <- accuracy(mod2net)#funcion accuracy nos da RMS y MAE
+m2<- as.numeric(m2)
+
+########## RESIDUOS DEL MODELO 3
+m3 <- accuracy(mod3net)#funcion accuracy nos da RMS y MAE
+m3<- as.numeric(m3)
+
+########## RESIDUOS DEL MODELO 4
+m4 <- accuracy(mod4net)#funcion accuracy nos da RMS y MAE
+m4<- as.numeric(m4)
+
+metodos <- data.frame (m1,m2,m3,m4)
+metodos
+RMSE <- data.frame(metodos[2,1],metodos[2,2],metodos[2,3],metodos[2,4])
+RMSE
+min(RMSE) 
+
+if(min(RMSE)==metodos[2,1])print("el minimo es el método 1")
+if(min(RMSE)==metodos[2,2])print("el minimo es el método 2")  
+if(min(RMSE)==metodos[2,3])print("el minimo es el método 3")
+if(min(RMSE)==metodos[2,4])print("el minimo es el método 4")  
+  
+ 
+MAE <- data.frame(metodos[3,1],metodos[3,2],metodos[3,3],metodos[3,4])
+MAE
+min(MAE) 
+
+if(min(MAE)==metodos[3,1])print("el minimo es el método 1")
+if(min(MAE)==metodos[3,2])print("el minimo es el método 2")  
+if(min(MAE)==metodos[3,3])print("el minimo es el método 3")
+if(min(MAE)==metodos[3,4])print("el minimo es el método 4")  
+
+
+
+###################### C O N C L U S I Ó N ###############################
+#   El modelo 4 es el que elegiríamos, gráficamente el modelo 4 y 3 son  #
+# los que se acercan más a los datos reales, pero el MAE del modelo 4    #
+# es menor al MAE del modelo 3.                                          #
+##########################################################################
