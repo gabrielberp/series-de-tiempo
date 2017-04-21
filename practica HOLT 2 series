@@ -1,0 +1,83 @@
+#2 SERIES DE TIEMPO (MINIMO 15 DATOS) UNA CON TENDENCIA A LA ALZA Y 
+#OTRA CON TENDENCIA A LA BAJA, CORTAR ESTAS SERIES EN EL 80 % DE LOS 
+#DATOS Y GRAFICAR LOS 4 MODELOS CON LOS DATOS REALES.
+
+#TENDENCIA LINEAL DE HOLT
+<- holt( , alpha= , beta= , initial="simple",  h=5)
+
+#TENDENCIA EXPONENCIAL DE HOLT
+<- holt( , alpha= , beta= , initial="simple", exponential= TRUE, h=5)
+
+#TENDENCIA ADITIVO AMORTIGUADO
+<- holt( , damped=TRUE)
+
+#TENDENCIA MULTIPÑLICATIVO AMORTIGUADO
+ <-holt( , exponential = T , damped= T)
+
+
+####################### SERIE 1  INPC
+
+inpc <- read.csv(file.choose())
+inpc
+
+tsinpc <- ts(inpc,start=c(2014,4), frequency = 12)
+tsinpc
+plot(tsinpc)
+
+tsinpc1 <- window(tsinpc, start=c(2014,4), end=c(2015, 7)) 
+tsinpc1
+tsinpc2 <- window(tsinpc, start=c(2015,8), end=c(2015, 11))
+tsinpc2
+
+install.packages("fpp")
+require(fpp)
+#TENDENCIA LINEAL DE HOLT
+holtlin<- holt(tsinpc1, alpha=0.2 , beta=0.1 , initial="simple",  h=4)
+
+#TENDENCIA EXPONENCIAL DE HOLT
+holtexp<- holt( tsinpc1, alpha=.95 , beta=.15 , initial="simple", exponential= TRUE, h=4)
+
+#TENDENCIA ADITIVO AMORTIGUADO
+amad<- holt( tsinpc1, damped=TRUE, h=4)
+
+#TENDENCIA MULTIPÑLICATIVO AMORTIGUADO
+ammult<-holt( tsinpc1, exponential = T , damped= T, h=4)
+
+X11()
+plot(tsinpc,ylab="INPC", xlab="AÑO", main="INDICE NACIONAL DE PRECIOS AL CONSUMIDOR", type = "l" )
+lines(holtlin$mean, col="2", type="l")
+lines(holtexp$mean, col="3", type="l")
+lines(amad$mean, col="4", type="l")
+lines(ammult$mean, col="5", type="l")
+legend ("topleft",lty=1, col=c(1,2,3,4,5),legend=c("reales" ,"holt lineal","holt aditivo","aditivo amortiguado","aditivo multiplicativo"), pch=17)
+
+####################### SERIE 2  NETFLIX
+tsnet<- window(tsnetflix,start=c(2016,10),end=c(2016,30))
+plot(tsnet)
+
+tsnet1 <- window(tsnetflix, start=c(2016,10), end=c(2016, 26)) 
+plot(tsnet1)
+tsnet2 <- window(tsnetflix, start=c(2016,27), end=c(2016, 30)) 
+plot(tsnet2)
+
+
+#TENDENCIA LINEAL DE HOLT
+holtlin1<- holt(tsnet1, alpha=0.95 , beta=0.15 , initial="simple",  h=4)
+
+#TENDENCIA EXPONENCIAL DE HOLT
+holtexp1<- holt( tsnet1, alpha=.95 , beta=.15 , initial="simple", exponential= TRUE, h=4)
+
+#TENDENCIA ADITIVO AMORTIGUADO
+amad1<- holt( tsnet1, damped=TRUE, h=4)
+
+#TENDENCIA MULTIPÑLICATIVO AMORTIGUADO
+ammult1<-holt( tsnet1, exponential = T , damped= T, h=4)
+
+X11()
+plot(tsnet,ylab="cierre", xlab="AÑO", main="acciones de NETFLIX", type = "l" )
+lines(holtlin1$mean, col="2", type="l")
+lines(holtexp1$mean, col="3", type="l")
+lines(amad1$mean, col="4", type="l")
+lines(ammult1$mean, col="5", type="l")
+legend ("bottomleft",lty=1, col=c(1,2,3,4,5),legend=c("reales" ,"holt lineal","holt aditivo","aditivo amortiguado","aditivo multiplicativo"), pch=17)
+
