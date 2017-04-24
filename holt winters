@@ -1,0 +1,25 @@
+### con una base de al menos 15 datos pronosticar con el metodo holt winters estacional
+### y exponencial, graficar los tres y los datos reales
+
+winters <- read.csv(file.choose())
+winters
+tswint <- ts(winters,start=c(2010,1), frequency = 6)
+tswint
+plot(tswint)
+
+tswint1 <- window(tswint, start=c(2010,1), end=c(2015, 6)) 
+tswint1
+
+install.packages("fpp")
+require(fpp)
+holtexpw<- holt( tswint1, alpha=.5 , beta=.5 , initial="simple", exponential= TRUE, h=6)
+
+hwad <- hw(tswint1,seasonal="additive")
+hwmult<-hw(tswint1,seasonal = "multiplicative")
+
+X11()
+plot(tswint,ylab="", xlab="año", main="I", type = "l" )
+lines(holtexpw$mean, col="2", type="l")
+lines(hwad$mean, col="3", type="l")
+lines(hwmult$mean, col="4", type="l")
+legend ("topleft",lty=1, col=c(1,2,3,4),legend=c("reales" ,"holt exponencial","winters aditivo","winters multiplicativo"), pch=17)
