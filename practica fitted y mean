@@ -1,0 +1,134 @@
+################## serie dolar#############################################
+dolar <- read.csv(file.choose())
+tsdolar <- ts(dolar,start=c(2016,210), frequency = 252)
+tsdolar
+plot(tsdolar)
+
+
+#metodos lineales
+install.packages("foreign")
+require(foreign)
+dolarmean<- meanf(tsdolar, h=10)
+dolaringen<- naive(tsdolar,h=10)
+dolaringest<- snaive(tsdolar,h=10)
+dolarderiva<- rwf(tsdolar,h=10,drift=TRUE)
+
+require("fpp")
+#holt
+dolarholt<- holt(tsdolar, alpha=0.2 , beta=0.1 , initial="simple",  h=10)
+
+#amortiguado
+dolaramort<- holt( tsdolar, damped=TRUE, h=10)
+
+#winter
+dolarwint <- hw(tsdolar,seasonal="additive",h=10)
+
+
+x11() #para abrir una nueva ventana
+plot(tsdolar, ylab="PRECIO",xlab= "año", main="PRECIO DEL DOLAR",type="l")
+lines(dolarmean$fitted,col="brown",type="l") 
+lines(dolarholt$fitted,col="red",type="l")
+lines(dolaramort$fitted,col="green",type="l")
+lines(dolarwint$fitted,col="brown",type="l") 
+legend ("topleft",lty=1, col=c(1,"brown","red","green","brown"),c("datos","media","holt","amortiguado","winter"), pch=15)
+
+
+
+x11() #para abrir una nueva ventana
+plot(dolarmean$mean, ylab="PRECIO",xlab= "año", main="PRECIO DEL DOLAR",type="l")
+lines(dolarmean$mean,col="brown",type="l") 
+lines(dolarholt$mean,col="red",type="l")
+lines(dolaramort$mean,col="green",type="l")
+lines(dolarwint$mean,col="brown",type="l") 
+legend ("topleft",lty=1, col=c(1,"brown","red","green","brown"),c("datos","media","holt","amortiguado","winter"), pch=15)
+
+
+################################################## serie ICA ######
+ica <- read.csv(file.choose())
+tsica <- ts(ica,start=c(2016,1), frequency = 252)
+tsica
+plot(tsica)
+
+
+#metodos lineales
+install.packages("foreign")
+require(foreign)
+icamean<- meanf(tsica, h=10)
+icaingen<- naive(tsica,h=10)
+icaingest<- snaive(tsica,h=10)
+icaderiva<- rwf(tsica,h=10,drift=TRUE)
+
+require("fpp")
+#holt
+icaholt<- holt(tsica, alpha=0.2 , beta=0.1 , initial="simple",  h=10)
+
+#amortiguado
+icaamort<- holt( tsica, damped=TRUE, h=10)
+
+#winter
+icawint <- hw(tsica,seasonal="additive",h=10)
+
+
+x11() #para abrir una nueva ventana
+plot(tsica, ylab="PRECIO",xlab= "año", main="PRECIO DE ACCIONES DE ICA",type="l")
+lines(icamean$fitted,col="brown",type="l") 
+lines(icaholt$fitted,col="red",type="l")
+lines(icaamort$fitted,col="green",type="l")
+lines(icawint$fitted,col="brown",type="l") 
+legend ("topleft",lty=1, col=c(1,"brown","red","green","brown"),c("datos","media","holt","amortiguado","winter"), pch=15)
+
+
+
+x11() #para abrir una nueva ventana
+plot(icamean, ylab="PRECIO",xlab= "año", main="PRECIO DE ACCIONES DE ICA",type="l")
+lines(icamean$mean,col="brown",type="l") 
+lines(icaholt$mean,col="red",type="l")
+lines(icaamort$mean,col="green",type="l")
+lines(icawint$mean,col="brown",type="l") 
+legend ("topleft",lty=1, col=c(1,"brown","red","green","brown"),c("datos","media","holt","amortiguado","winter"), pch=15)
+
+
+################## serie CRECIMIENTO DEL PIB #################################
+pib <- read.csv(file.choose())
+tspib <- ts(pib,start=c(2000), frequency = 1)
+tspib
+plot(tspib)
+
+
+#metodos lineales
+install.packages("foreign")
+require(foreign)
+pibmean<- meanf(tspib, h=3)
+pibingen<- naive(tspib,h=3)
+pibingest<- snaive(tspib,h=3)
+pibderiva<- rwf(tspib,h=3,drift=TRUE)
+
+require("fpp")
+#holt
+pibholt<- holt(tspib, alpha=0.2 , beta=0.1 , initial="simple",  h=3)
+
+#amortiguado
+pibamort<- holt( tspib, damped=TRUE, h=3)
+
+#winter
+pibwint <- hw(tspib,seasonal="additive",h=3)
+
+
+x11() #para abrir una nueva ventana
+plot(tspib, ylab="%",xlab= "año", main="CRECIMIENTO DEL PIB",type="l")
+lines(pibmean$fitted,col="brown",type="l") 
+lines(pibholt$fitted,col="red",type="l")
+lines(pibamort$fitted,col="green",type="l")
+lines(pibwint$fitted,col="brown",type="l") 
+legend ("topleft",lty=1, col=c(1,"brown","red","green","brown"),c("datos","media","holt","amortiguado","winter"), pch=15)
+
+
+
+x11() #para abrir una nueva ventana
+plot(pibmean, ylab="PRECIO",xlab= "año", main="CRECIMIENTO DEL PIB",type="l")
+lines(pibmean$mean,col="brown",type="l") 
+lines(pibholt$mean,col="red",type="l")
+lines(pibamort$mean,col="green",type="l")
+lines(pibwint$mean,col="brown",type="l") 
+legend ("topleft",lty=1, col=c(1,"brown","red","green","brown"),c("datos","media","holt","amortiguado","winter"), pch=15)
+
