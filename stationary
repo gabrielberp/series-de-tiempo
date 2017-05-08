@@ -1,0 +1,8 @@
+icam <- read.csv(file.choose())
+tsica <- ts(icam,frequency=252,start=c(2016,70))
+plot(tsica)
+acf(tsica)
+
+aa<- sample(300:900,252)
+ta <- ts(aa,frequency=252,start=c(2016))
+acf(ta)
