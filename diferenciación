@@ -1,0 +1,23 @@
+icam <- read.csv(file.choose())
+tsica <- ts(icam,frequency=252,start=c(2016,70))
+plot(tsica)
+acf(tsica)
+
+
+##### DIFERENCIACION
+
+# FUNCIÓN EN R: diff()
+
+#diferenciación de la serie ICA
+
+difica <-diff(tsica)
+difica
+
+#diferenciación de la serie de ICA de forma manual
+
+tsica <- ts(icam,frequency=252,start=c(2016,70))
+tsica1 <- ts(icam,frequency=252,start=c(2016,71)) #hacemos una nueva serie, 
+                                                  #con los mismos datos pero que comience un periodo despues
+
+difica2<- tsica-tsica1 #hacemos la resta con la nueva serie
+difica2
