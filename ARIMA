@@ -1,0 +1,102 @@
+bimbo <-read.csv(file.choose())
+cemex <-read.csv(file.choose())
+tsbimbo <- ts (bimbo,frequency = 252,start=2016)
+tscemex <- ts (cemex,frequency = 252,start=2016)
+
+plot(tscemex)
+plot(tsbimbo)
+require(foreign)
+require(fpp)
+
+####################### PRONOSTICO DE BIMBO CON ARIMA
+### paso 1: Revisar si la serie es estacionaria
+###         Se aplica la prueba de raíz unitaria a través de la función adf.test
+###         y esperamos que el p-value sea menor a .05
+adf.test(tsbimbo) #el p-value obtenido es: .4445, por lo que aplicamos la primera 
+#                 diferenciacion ya que no es estacionaria
+diftsbimbo <- diff(tsbimbo)
+adf.test(diftsbimbo) # el p-value es .01 , por lo tanto es estacionaria y nuestro valor
+#                      d del arima es 1, ya que sólo aplicamos 1 diferenciación 
+acf(diftsbimbo)# aplicamos acf para obtener el correlograma de la serie diferenciada
+#               el número de lineas que soprepasan las franjas del nivel de confianza son 2,
+#               entonces la q del arima es igual a 2.
+#Para determinar el valor de p que se relaciona con los modelos autorregresivos se utiliza
+# la función pacf()
+pacf(diftsbimbo) #como solo pasan las franjas 1 línea el valor de p del modelo arima es 1
+
+# con los datos anteriores nuestro modelo ARIMA queda asi: ARIMA(1,1,2)
+modbim<- Arima(tsbimbo, order=c(1,1,2))
+modbim
+
+modbim1<- Arima(tsbimbo, order=c(2,1,2))
+modbim1
+
+# Entro los dos modelos de ARIMA debemos revisar el valor del AICc y el menor valor de AICc sería
+# el mejor modelo con el criterio de AIKAIKE
+
+# AICc de modbim es 590.26
+# AICc de modbim1 es 591.22
+# por lo tanto usamos el modbim
+
+# despues de tener la propuesta de modelo aplicamos la prueba a los residuales para ver si tiene
+# ruido blanco
+modres<- residuals(modbim)
+Box.test(modres, lag=12, type="Ljung-Box")# p- value grande sugiere son ruidos blancos
+# ya que vimos que tiene ruido blanco aplicamos el pronóstico
+mod1<- forecast(modbim,h=12)
+plot(forecast(modbim, h=12),include=18)# include nos da los ultimos 18 datos
+
+
+auto.arima(tsbimbo) # R nos propone un ARIMA (2,1,2)
+modres1<- residuals(modbim1)
+Box.test(modres1, lag=12, type="Ljung-Box")# p- value grande sugiere son ruidos blancos
+# ya que vimos que tiene ruido blanco aplicamos el pronóstico
+mod2<- forecast(modbim1,h=12)
+plot(forecast(modbim1, h=12),include=50)# include nos da los ultimos 18 datos
+
+
+####################### PRONOSTICO DE CEMEX CON ARIMA
+### paso 1: Revisar si la serie es estacionaria
+###         Se aplica la prueba de raíz unitaria a través de la función adf.test
+###         y esperamos que el p-value sea menor a .05
+adf.test(tscemex) #el p-value obtenido es: .8506, por lo que aplicamos la primera 
+#                 diferenciacion ya que no es estacionaria
+diftscemex <- diff(tscemex)
+adf.test(diftscemex) # el p-value es .01 , por lo tanto es estacionaria y nuestro valor
+#                      d del arima es 1, ya que sólo aplicamos 1 diferenciación 
+acf(diftscemex)# aplicamos acf para obtener el correlograma de la serie diferenciada
+#               el número de lineas que soprepasan las franjas del nivel de confianza es 1,
+#               entonces la q del arima es igual a 1.
+#Para determinar el valor de p que se relaciona con los modelos autorregresivos se utiliza
+# la función pacf()
+pacf(diftscemex) #como ninguna línea pasa las franjas, el valor de p del modelo arima es 0
+
+# con los datos anteriores nuestro modelo ARIMA queda asi: ARIMA(0,1,1)
+modcem<- Arima(tscemex, order=c(0,1,1))
+modcem
+
+modcem1<- Arima(tscemex, order=c(1,1,1))
+modcem1
+
+# Entre los dos modelos de ARIMA debemos revisar el valor del AICc y el menor valor de AICc sería
+# el mejor modelo con el criterio de AIKAIKE
+
+# AICc de modcem es 149.65
+# AICc de modcem1 es 151.65
+# por lo tanto usamos el modbim
+
+# despues de tener la propuesta de modelo aplicamos la prueba a los residuales para ver si tiene
+# ruido blanco
+modrescem<- residuals(modcem)
+Box.test(modrescem, lag=12, type="Ljung-Box")# p- value grande sugiere son ruidos blancos
+# ya que vimos que tiene ruido blanco aplicamos el pronóstico
+mod1cem<- forecast(modcem,h=12)
+plot(forecast(modcem, h=12),include=18)# include nos da los ultimos 18 datos
+
+
+auto.arima(tscemex) # R nos propone un ARIMA (0,1,0)
+modres1cem<- residuals(modcem1)
+Box.test(modres1cem, lag=12, type="Ljung-Box")# p- value grande sugiere son ruidos blancos
+# ya que vimos que tiene ruido blanco aplicamos el pronóstico
+mod2cem<- forecast(modcem1,h=12)
+plot(forecast(modcem1, h=12),include=50)# include nos da los ultimos 18 datos
