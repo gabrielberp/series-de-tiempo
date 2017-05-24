@@ -1,0 +1,61 @@
+###acciones de América Movil
+am<-read.csv(file.choose())
+tsam <- ts (am,frequency = 252,start=2016)
+tsam
+
+
+####################         MODELOS AUTORREGRESIVOS     #########################
+zz<- Arima(tsam, order=c(1,0,0))
+zz
+## yt= c + fi1(yt-1)+fi2(yt-2)+...+fip(yt-p)+et
+#en este caso el modelo AR(1) se plantea de la siguiente manera
+# yt= 13.3425 + .9864(yt-1)+et ... en este caso fi1=.9864
+# el s.e. que nos arroja debajo es el error estandar de cada coeficiente
+#si tuvieramos un modelo Autorregresivo de orden 2 se expresa como modelo Arima
+# de la siguiente manera:
+
+zz2 <-Arima(tsam, order=c(2,0,0))
+zz2
+#en este caso el modelo AR(2) se plantea de la siguiente manera
+# yt= 13.2634 + 1.0601(yt-1) - .0755(yt-2) +et ... en este caso fi1=1.0601
+##################################################################################
+
+
+####################    MODELOS DE PROMEDIOS MOVILES   ###########################
+# ahora bien si tenemos pormedios moviles MA (q) se pued expresar
+#yt = c+ teta1(et-1) + teta2(et-2) + . . . + tetaq(et-q) + et
+# a través del modelo ARIMA se puede expresar de la siguiente manera
+
+yy <- Arima(tsam, order= c(0,0,1))#en este caso para un MA (1) (promedio moviles de orden 1)
+yy
+#en este caso el modelo MA(1) se plantea de la siguiente manera
+# yt= 12.7409 + .8605(et-1)+et ... en este caso teta1=.8605
+
+#para un promedios moviles de orden 2 se expresa como ARIMA (0,0,2)
+yy2 <- Arima(tsam, order= c(0,0,2)) #MA (2)
+yy2
+#en este caso el modelo MA(2) se plantea de la siguiente manera
+# yt= 12.7481 + 1.339(et-1)+ 0.7423(et-2) +et ... en este caso teta1=1.339, teta2=0.7423
+###################################################################################
+
+
+####################  MODELOS ARIMA (con diferenciación)  ###########################
+
+# Para un modelo ARIMA con p=2, d=3, q=2 (ARIMA(2,3,2)) se expresa:
+yy3 <- Arima (tsam, order=c(2,3,2))
+yy3
+
+#con este modelo expresamos:
+# y'''t=.0716(y'''t-1) - 0.1527(y'''y-2) - 1.9987(et-1) + .9998(et-2) + et
+###################################################################################
+
+
+### Ejercicio acciones IXE
+ixe<-read.csv(file.choose())
+tsixe <- ts (ixe,frequency = 252,start=2016)
+tsixe
+
+modixe<- Arima(tsixe, order=c(0,3,2))
+modixe
+#con este modelo expresamos:
+# y'''t= - 1.9932(et-1) + .9935(et-2) + et
